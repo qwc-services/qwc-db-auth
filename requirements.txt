@@ -9,5 +9,6 @@ pyotp==2.2.7
 qrcode==6.1
 SQLAlchemy==1.2.18
 werkzeug==0.16.1
+email_validator==1.0.5
 git+https://github.com/qwc-services/qwc-services-core.git@e925d60269a3147d16719ea669cfb55e32c9fa4f#egg=qwc-services-core
 git+https://github.com/qwc-services/qwc-config-db.git@87dc9a1a8224f6db5d6703b437bfb654bd451b7e#egg=qwc-config-db
