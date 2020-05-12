@@ -1,7 +1,7 @@
 import logging
 import os
 
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_login import LoginManager
 from flask_jwt_extended import jwt_required, jwt_optional
 from flask_mail import Mail
@@ -89,6 +89,18 @@ def new_password():
 def edit_password():
     token = request.args.get('reset_password_token')
     return db_auth.edit_password(token)
+
+
+""" readyness probe endpoint """
+@app.route("/ready", methods=['GET'])
+def ready():
+    return jsonify({"status": "OK"})
+
+
+""" liveness probe endpoint """
+@app.route("/healthz", methods=['GET'])
+def healthz():
+    return jsonify({"status": "OK"})
 
 
 if __name__ == '__main__':
