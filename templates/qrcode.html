@@ -1,31 +1,31 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Two Factor Authentication Setup</h1>
+    <h1>{{ i18n.t('auth.qrcode_page_title') }}</h1>
     <form action="{{ url_for('setup_totp') }}" method="post">
         {{ form.hidden_tag() }}
         <div class="login totp-setup">
             <div class="login-screen">
                 <div class="app-title">
-                    <h1>Two Factor Authentication Setup</h1>
+                    <h1>{{ i18n.t('auth.qrcode_page_title') }}</h1>
                 </div>
                 <div class="login-form">
                     <p>
-                        Scan the following QR code with your OTP app<br/>
-                        (e.g. FreeOTP or Google Authenticator):
+                        {{ i18n.t('auth.qrcode_line1') }}<br/>
+                        {{ i18n.t('auth.qrcode_line2') }}:
                     </p>
                     <img width_="300" src="{{ url_for('qrcode') }}">
 
-                    <p>Secret: <b>{{ totp_secret }}</b></p>
+                    <p>{{ i18n.t('auth.qrcode_secret') }}: <b>{{ totp_secret }}</b></p>
 
                     <div class="control-group">
-                      {{ form.token(placeholder="Confirm verification code", autocomplete="off", autofocus=True, class_='login-field') }}
+                      {{ form.token(placeholder=i18n.t('auth.qrcode_code_placeholder'), autocomplete="off", autofocus=True, class_='login-field') }}
                       {% for error in form.token.errors %}
                         <br/><span style="color: red;">[{{ error }}]</span>
                       {% endfor %}
                     </div>
      
-                    <input type="submit" value="Confirm" class="btn btn-primary btn-large btn-block" >
+                    <input type="submit" value="{{ i18n.t('auth.qrcode_button') }}" class="btn btn-primary btn-large btn-block" >
                     <br>
                 </div>
             </div>
