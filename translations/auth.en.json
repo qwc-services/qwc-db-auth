@@ -1,0 +1,39 @@
+{
+  "en": {
+    "login_page_title": "Sign In",
+    "login_form_title": "Login",
+    "login_button": "Log in",
+    "username_placeholder": "username",
+    "password_placeholder": "password",
+    "forgot_password": "Forgot your password?",
+    "auth_failed": "Invalid username or password",
+    "validation_error": "Form validation error",
+
+    "login_link": "Sign In",
+
+    "new_password_page_title": "Forgot your password?",
+    "new_password_form_title": "Send me reset password instructions",
+    "new_password_button": "Send instructions",
+    "email_placeholder": "Email",
+
+    "auth.reset_mail_subject": "Reset password instructions",
+
+    "verfication_invalid": "Invalid verification code",
+
+    "edit_password_page_title": "Change your password",
+    "edit_password_button": "Change my password",
+    "new_password_placeholder": "New password",
+    "new_password_confirm_placeholder": "Confirm new password",
+
+    "qrcode_page_title": "Two Factor Authentication Setup",
+    "qrcode_line1": "Scan the following QR code with your OTP app",
+    "qrcode_line2": "(e.g. FreeOTP or Google Authenticator)",
+    "qrcode_secret": "Secret",
+    "qrcode_code_placeholder": "Confirm verification code",
+    "qrcode_button": "Confirm",
+
+    "verify_page_title": "Sign In",
+    "verify_form_title": "Enter your verification code",
+    "verify_code_placeholder": "Verification code"
+  }
+}

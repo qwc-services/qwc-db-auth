@@ -12,6 +12,7 @@ from flask_jwt_extended import create_access_token, create_refresh_token, \
 from flask_mail import Message
 import pyotp
 import qrcode
+import i18n
 
 from qwc_services_core.database import DatabaseEngine
 from qwc_services_core.config_models import ConfigModels
@@ -169,18 +170,18 @@ class DBAuth:
                             db_session
                         )
                 else:
-                    flash('Invalid username or password')
+                    flash(i18n.t('auth.auth_failed'))
                     return self.response(
                         redirect(url_for('login', url=retry_target_url)),
                         db_session
                     )
             else:
-                if len(get_flashed_messages()) == 0:
-                    # e.g. CSRF timeout
-                    flash('Form validation error')
+                # e.g. CSRF timeout
+                flash(i18n.t('auth.validation_error'))
 
         return self.response(
-            render_template('login.html', title='Sign In', form=form),
+            render_template('login.html', form=form, i18n=i18n,
+                            title=i18n.t("auth.login_page_title")),
             db_session
         )
 
@@ -215,15 +216,16 @@ class DBAuth:
                 self.clear_verify_session()
                 return self.__login_response(user, target_url)
             else:
-                flash('Invalid verification code')
-                form.token.errors.append('Invalid verification code')
+                flash(i18n.t('auth.verfication_invalid'))
+                form.token.errors.append(i18n.t('auth.verfication_invalid'))
                 form.token.data = None
 
             if user.failed_sign_in_count >= MAX_LOGIN_ATTEMPTS:
                 # redirect to login after too many login attempts
                 return redirect(url_for('login'))
 
-        return render_template('verify.html', title='Sign In', form=form)
+        return render_template('verify.html', form=form, i18n=i18n,
+                               title=i18n.t("auth.verify_page_title"))
 
     def logout(self):
         """Sign out."""
@@ -283,8 +285,8 @@ class DBAuth:
                 self.clear_verify_session()
                 return self.__login_response(user, target_url)
             else:
-                flash('Invalid verification code')
-                form.token.errors.append('Invalid verification code')
+                flash(i18n.t('auth.verfication_invalid'))
+                form.token.errors.append(i18n.t('auth.verfication_invalid'))
                 form.token.data = None
 
         # enable one-time loading of QR code image
@@ -292,7 +294,8 @@ class DBAuth:
 
         # show form
         resp = make_response(render_template(
-            'qrcode.html', title='Two Factor Authentication Setup', form=form,
+            'qrcode.html', form=form, i18n=i18n,
+            title=i18n.t("auth.qrcode_page_title"),
             totp_secret=totp_secret
         ))
         # do not cache in browser
@@ -381,8 +384,8 @@ class DBAuth:
                     flash("Failed to send reset password instructions")
                     return self.response(
                         render_template(
-                            'new_password.html', title='Forgot your password?',
-                            form=form
+                            'new_password.html', form=form, i18n=i18n,
+                            title=i18n.t("auth.new_password_page_title")
                         ),
                         db_session
                     )
@@ -398,7 +401,8 @@ class DBAuth:
             )
 
         return render_template(
-            'new_password.html', title='Forgot your password?', form=form
+            'new_password.html', form=form, i18n=i18n,
+            title=i18n.t("auth.new_password_page_title")
         )
 
     def edit_password(self, token):
@@ -434,8 +438,8 @@ class DBAuth:
                 flash("Reset password token is invalid")
                 return self.response(
                     render_template(
-                        'edit_password.html', title='Change your password',
-                        form=form
+                        'edit_password.html', form=form, i18n=i18n,
+                        title=i18n.t("auth.edit_password_page_title")
                     ),
                     db_session
                 )
@@ -445,7 +449,8 @@ class DBAuth:
             form.reset_password_token.data = token
 
         return render_template(
-            'edit_password.html', title='Change your password', form=form
+            'edit_password.html', form=form, i18n=i18n,
+            title=i18n.t("auth.edit_password_page_title")
         )
 
     def require_password_change(self, user, target_url, db_session):
@@ -468,7 +473,8 @@ class DBAuth:
 
         flash("Please choose a new password")
         return render_template(
-            'edit_password.html', title='Change your password', form=form
+            'edit_password.html', form=form, i18n=i18n,
+            title=i18n.t("auth.edit_password_page_title")
         )
 
     def edit_password_form(self):
@@ -644,12 +650,13 @@ class DBAuth:
         )
 
         msg = Message(
-            "Reset password instructions",
+            i18n.t('auth.reset_mail_subject'),
             recipients=[user.email]
         )
         # set message body from template
         msg.body = render_template(
-            'reset_password_instructions.txt', user=user, reset_url=reset_url
+            'reset_password_instructions.%s.txt' % i18n.get('locale'),
+            user=user, reset_url=reset_url
         )
 
         # send message

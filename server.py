@@ -6,6 +6,7 @@ from flask import Flask, request, jsonify
 from flask_login import LoginManager
 from flask_jwt_extended import jwt_required, jwt_optional
 from flask_mail import Mail
+import i18n
 
 from qwc_services_core.jwt import jwt_manager
 from qwc_services_core.tenant_handler import (
@@ -24,6 +25,9 @@ app.config['JWT_ACCESS_TOKEN_EXPIRES'] = int(os.environ.get(
 
 jwt = jwt_manager(app)
 app.secret_key = app.config['JWT_SECRET_KEY']
+
+i18n.set('load_path', ['./translations'])
+SUPPORTED_LANGUAGES = ['en', 'de']
 
 # https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-v-user-logins
 login = LoginManager(app)
@@ -120,6 +124,12 @@ def ready():
 @app.route("/healthz", methods=['GET'])
 def healthz():
     return jsonify({"status": "OK"})
+
+
+@app.before_request
+def set_lang():
+    i18n.set('locale',
+             request.accept_languages.best_match(SUPPORTED_LANGUAGES))
 
 
 if __name__ == '__main__':
