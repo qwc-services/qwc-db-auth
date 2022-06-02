@@ -3,7 +3,7 @@ Flask-JWT-Extended==4.3.1
 flask_login==0.5.0
 Flask-WTF==1.0.0
 Flask-Mail==0.9.1
-Pillow==9.1.0
+Pillow==9.1.1
 python-dotenv==0.19.2
 psycopg2-binary==2.9.2
 pyotp==2.6.0
