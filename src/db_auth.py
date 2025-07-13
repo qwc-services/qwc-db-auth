@@ -695,12 +695,14 @@ class DBAuth:
         :param User user: User instance
         :param str password: Password
         """
+        remote_addr = request.headers.get("X-Forwarded-For", request.remote_addr).split(",")[0].strip()
+        self.logger.info("Remote IP is %s" % remote_addr)
         # Check if IP blacklisted
         if self.ip_blacklist_duration > 0:
-            entry = ip_blacklist.lookup(request.remote_addr)
+            entry = ip_blacklist.lookup(remote_addr)
             count = entry['value'] if entry else 0
             if count >= self.ip_blacklist_max_attempt_count:
-                self.logger.info("IP %s is blacklisted with %s attempts" % (request.remote_addr, count))
+                self.logger.info("IP %s is blacklisted with %s attempts" % (remote_addr, count))
                 return False, i18n.t('auth.ip_blacklisted')
 
         if user is None or user.password_hash is None:
@@ -724,10 +726,10 @@ class DBAuth:
 
             # add to ip blacklist
             if self.ip_blacklist_duration > 0:
-                entry = ip_blacklist.lookup(request.remote_addr)
+                entry = ip_blacklist.lookup(remote_addr)
                 count = entry['value'] if entry else 0
-                ip_blacklist.set(request.remote_addr, count + 1, self.ip_blacklist_duration)
-                self.logger.info("Attempt count for IP %s: %s" % (request.remote_addr, count + 1))
+                ip_blacklist.set(remote_addr, count + 1, self.ip_blacklist_duration)
+                self.logger.info("Attempt count for IP %s: %s" % (remote_addr, count + 1))
 
             # increase failed login attempts counter
             user.failed_sign_in_count += 1
