@@ -181,9 +181,11 @@ class DBAuth:
                 # force password change on first sign in of default admin user
                 # NOTE: user.last_sign_in_at will be set after successful auth
                 force_password_change = (
-                    user and user.force_password_change or (
-                        user.last_sign_in_at is None and (
-                            user.name == self.DEFAULT_ADMIN_USER or self.force_password_change_first_login
+                    user and (
+                        user.force_password_change or (
+                            user.last_sign_in_at is None and (
+                                user.name == self.DEFAULT_ADMIN_USER or self.force_password_change_first_login
+                            )
                         )
                     )
                 )
