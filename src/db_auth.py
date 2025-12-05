@@ -178,25 +178,22 @@ class DBAuth:
                 self.logger.debug("Attempting to login via form as %s" % form.username.data)
                 user = self.find_user(db_session, name=form.username.data)
 
-                # force password change on first sign in of default admin user
                 # NOTE: user.last_sign_in_at will be set after successful auth
-                force_password_change = (
-                    user and (
-                        user.force_password_change or (
-                            user.last_sign_in_at is None and (
-                                user.name == self.DEFAULT_ADMIN_USER or self.force_password_change_first_login
-                            )
-                        )
-                    )
-                )
-
-                # check if password has expired
-                password_has_expired = self.password_has_expired(db_session, user)
-                if password_has_expired:
-                    force_password_change = True
+                last_sign_in_at = user.last_sign_in_at if user else None
 
                 login_success, login_fail_reason = self.__user_is_authorized(user, form.password.data)
                 if login_success:
+
+                    password_has_expired = self.password_has_expired(db_session, user)
+
+                    force_password_change = (
+                        user.force_password_change or (
+                            last_sign_in_at is None and (
+                                user.name == self.DEFAULT_ADMIN_USER or self.force_password_change_first_login
+                            )
+                        ) or password_has_expired
+                    )
+
                     if not force_password_change:
                         if self.password_history_active:
                             # check if any password history is present
