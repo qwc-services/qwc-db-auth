@@ -244,6 +244,15 @@ class DBAuth:
                             title=i18n.t("auth.login_page_title"),
                             login_hint=self.login_hint)
 
+    def ensureauth(self, identity):
+        """Sign out."""
+        target_url = request.args.get('url', 'about:blank')
+        resp = make_response(redirect(target_url))
+        if identity:
+            return make_response(redirect(target_url))
+        else:
+            return make_response(redirect(url_for('login', url=url_for('redirect', url=target_url))))
+
     def verify_login(self):
         """Verify user login (e.g. from basic auth header)."""
         req = request.form

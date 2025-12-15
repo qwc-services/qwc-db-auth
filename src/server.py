@@ -2,7 +2,7 @@ import logging
 import os
 import re
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, make_response, redirect as flask_redirect
 from flask_login import LoginManager
 from flask_wtf.csrf import CSRFError
 from flask_mail import Mail
@@ -89,6 +89,16 @@ def load_user(id):
 def login():
     return db_auth_handler().login()
 
+@app.route('/ensureauth', methods=['GET'])
+@optional_auth
+def ensureauth():
+    return db_auth_handler().ensureauth(get_identity())
+
+@app.route('/redirect', methods=['GET'])
+def redirect():
+    # NOTE: used as an intermediate step for /ensureauth, to ensure /login does not directly
+    # redirect and send the access cookies to an external url
+    return make_response(flask_redirect(request.args.get('url', 'about:blank')))
 
 @app.route('/verify_login', methods=['POST'])
 @optional_auth
