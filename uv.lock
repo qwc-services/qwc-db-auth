@@ -450,7 +450,7 @@ wheels = [
 
 [[package]]
 name = "qwc-db-auth"
-version = "2026.1.18"
+version = "2026.1.25"
 source = { virtual = "." }
 dependencies = [
     { name = "email-validator" },
