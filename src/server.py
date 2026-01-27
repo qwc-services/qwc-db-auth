@@ -25,13 +25,7 @@ app.config['JWT_ACCESS_TOKEN_EXPIRES'] = int(os.environ.get(
     'JWT_ACCESS_TOKEN_EXPIRES', 12*3600))
 app.config['SESSION_COOKIE_SECURE'] = app.config['JWT_COOKIE_SECURE']
 app.config['SESSION_COOKIE_SAMESITE'] = app.config['JWT_COOKIE_SAMESITE']
-
 app.config['WTF_CSRF_ENABLED'] = True
-app.config['WTF_CSRF_SSL_STRICT'] = os.environ.get(
-    'WTF_CSRF_SSL_STRICT', 'True').lower() == 'true'
-# JWT CSRF protection conflicts with WTF CSRF protection.
-# NOTE: Set as ENV because auth_manager reads it from ENV internally
-os.environ['JWT_COOKIE_CSRF_PROTECT'] = 'False'
 
 jwt = auth_manager(app)
 app.secret_key = app.config['JWT_SECRET_KEY']
