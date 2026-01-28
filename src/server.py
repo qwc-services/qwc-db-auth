@@ -25,6 +25,7 @@ app.config['JWT_ACCESS_TOKEN_EXPIRES'] = int(os.environ.get(
 app.config['SESSION_COOKIE_SECURE'] = app.config['JWT_COOKIE_SECURE']
 app.config['SESSION_COOKIE_SAMESITE'] = app.config['JWT_COOKIE_SAMESITE']
 app.config['WTF_CSRF_ENABLED'] = True
+app.config['WTF_CSRF_FIELD_NAME'] = 'wtf_csrf_token'
 
 jwt = auth_manager(app)
 app.secret_key = app.config['JWT_SECRET_KEY']

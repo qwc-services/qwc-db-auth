@@ -12,6 +12,15 @@
         {% if form.favicon %}
         <link rel="icon" href="{{form.favicon}}">
         {% endif %}
+        <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", () => {
+            const input = document.getElementById("jwt_csrf_token");
+            if (input) {
+                const cookies = Object.fromEntries(document.cookie.split("; ").map(x => x.split("=", 2)))
+                input.value = cookies['csrf_access_token'] ?? '';
+            }
+        });
+        </script>
     </head>
     <body
         {% if form.background %}
