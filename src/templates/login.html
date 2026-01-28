@@ -3,6 +3,7 @@
 {% block content %}
     <form action="" method="post" autocomplete="off">
         {{ form.hidden_tag() }}
+        <input type="hidden" name="csrf_token" value="" id="jwt_csrf_token" />
         <div class="login">
             <div class="login-screen">
                 <div class="app-title">
