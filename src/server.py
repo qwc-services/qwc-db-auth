@@ -178,4 +178,4 @@ def set_lang():
 if __name__ == '__main__':
     print("Starting DB Auth service...")
     app.logger.setLevel(logging.DEBUG)
-    app.run(host='localhost', port=5017, debug=True)
+    app.run(host='localhost', port=os.environ.get("FLASK_RUN_PORT", 5000), debug=True)
