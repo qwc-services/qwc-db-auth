@@ -29,10 +29,36 @@ Example:
 }
 ```
 
+### Environment variables
+
+Config options in the config file can be overridden by equivalent uppercase environment variables.
+
+In addition, the following environment variables are supported:
+
+| Name                         | Default       | Description                                                                               |
+|------------------------------|---------------|-------------------------------------------------------------------------------------------|
+| `JWT_COOKIE_SECURE`          | `False`       | See [Flask-JWT-Extended](https://flask-jwt-extended.readthedocs.io/en/stable/options.html#JWT_COOKIE_SECURE). |
+| `JWT_COOKIE_SAMESITE`        | `Lax`         | See [Flask-JWT-Extended](https://flask-jwt-extended.readthedocs.io/en/stable/options.html#JWT_COOKIE_SAMESITE). |
+| `JWT_ACCESS_TOKEN_EXPIRES`   | `12*3600`     | See [Flask-JWT-Extended](https://flask-jwt-extended.readthedocs.io/en/stable/options.html#JWT_ACCESS_TOKEN_EXPIRES). |
+| `MAIL_SERVER`                | `localhost`   | Mailer setup, see [Flask-Mail](https://flask-mail.readthedocs.io/en/latest/#configuring). |
+| `MAIL_PORT`                  | `25`          | Mailer setup, see [Flask-Mail](https://flask-mail.readthedocs.io/en/latest/#configuring). |
+| `MAIL_USE_TLS`               | `False`       | Mailer setup, see [Flask-Mail](https://flask-mail.readthedocs.io/en/latest/#configuring). |
+| `MAIL_USE_SSL`               | `False`       | Mailer setup, see [Flask-Mail](https://flask-mail.readthedocs.io/en/latest/#configuring). |
+| `MAIL_DEBUG`                 | `app.debug`   | Mailer setup, see [Flask-Mail](https://flask-mail.readthedocs.io/en/latest/#configuring). |
+| `MAIL_USERNAME`              | `None`        | Mailer setup, see [Flask-Mail](https://flask-mail.readthedocs.io/en/latest/#configuring). |
+| `MAIL_PASSWORD`              | `None`        | Mailer setup, see [Flask-Mail](https://flask-mail.readthedocs.io/en/latest/#configuring). |
+| `MAIL_DEFAULT_SENDER`        | `None`        | Mailer setup, see [Flask-Mail](https://flask-mail.readthedocs.io/en/latest/#configuring). |
+| `MAIL_MAX_EMAILS`            | `None`        | Mailer setup, see [Flask-Mail](https://flask-mail.readthedocs.io/en/latest/#configuring). |
+| `MAIL_SUPPRESS_SEND`         | `app.testing` | Mailer setup, see [Flask-Mail](https://flask-mail.readthedocs.io/en/latest/#configuring). |
+| `MAIL_ASCII_ATTACHMENTS`     | `False`       | Mailer setup, see [Flask-Mail](https://flask-mail.readthedocs.io/en/latest/#configuring). |
+
+
 Set the `MAX_LOGIN_ATTEMPTS` environment variable to set the maximum number of
 failed login attempts before sign in is blocked (default: `20`).
 
-A minimum password length of `8` with no other constraints is set by default. Optional password complexity constraints can be set using the following `config` options:
+### Password constraints
+
+A minimum password length of `8` with no other constraints is set by default. Optional password complexity constraints can be set using the following options:
 ```json
 "config": {
   "password_min_length": 8,
@@ -65,46 +91,37 @@ If the `qwc_config.password_histories` table is present, additional optional pas
 * `password_update_interval` (default: `-1`): Min number of seconds before a password may be changed again, or `-1` to disable
 * `password_allow_reuse` (default: `true`): Set whether a user may reuse previous passwords or not
 
-Besides the form based DB login, an (insecure) plain POST login is supported. This method can be
-activated by setting `POST_PARAM_LOGIN=True`. User and password are passed as POST parameters
-`username` and `password`.
-Usage example: `curl -d 'username=demo&password=demo' http://localhost:5017/login`.
 
-Additional user info fields from `qwc_config.user_infos` may be added to the JWT identity by setting `user_info_fields`:
+### Plaintext POST login
+
+Besides the form based DB login, an (insecure) plain POST login is supported. This method can be
+activated by setting `post_param_login` to `true`. User and password are passed as POST parameters
+`username` and `password`.
+
+Usage example: `curl -d 'username=demo&password=demo' http://localhost:5000/login`.
+
+### JWT user info fields
+
+Additional user info fields from the `qwc_config.user_infos` table from the QWC Config DB may be included in the issued JWT identity by setting `user_info_fields`:
+
 ```json
 "config": {
   "user_info_fields": ["surname", "first_name"]
 }
 ```
 
-[Flask-Mail](https://pythonhosted.org/Flask-Mail/) is used for sending mails like password resets. These are the available options:
-
-* `MAIL_SERVER`: default ‘localhost’
-* `MAIL_PORT`: default 25
-* `MAIL_USE_TLS`: default False
-* `MAIL_USE_SSL`: default False
-* `MAIL_DEBUG`: default app.debug
-* `MAIL_USERNAME`: default None
-* `MAIL_PASSWORD`: default None
-* `MAIL_DEFAULT_SENDER`: default None
-* `MAIL_MAX_EMAILS`: default None
-* `MAIL_SUPPRESS_SEND`: default app.testing
-* `MAIL_ASCII_ATTACHMENTS`: default False
-
-In addition the standard Flask `TESTING` configuration option is used by Flask-Mail in unit tests.
-
 ### Two factor authentication
 
-Two factor authentication using TOTP can be enabled by setting the environment variable `TOTP_ENABLED=True`.
+Two factor authentication using TOTP can be enabled by setting `totp_enabled` to `true`.
 This will require an additional verification token after sign in, based on the user's TOTP secret.
 
 A personal QR code for setting up the two factor authentication is shown to the user on first sign in (or if the TOTP secret is empty).
-The TOTP issuer name for your application can be set using the environment variable `TOTP_ISSUER_NAME="QWC Services"`.
+The TOTP issuer name for your application can set via `totp_issuer_name`.
 
 An user's TOTP secret can be reset by clearing it in the Admin GUI user form.
 
 
-### Customization
+### Appearance customization
 
 You can add a custom logo and a custom background image by setting the following `config` options:
 
@@ -132,44 +149,28 @@ where `/auth` is the service mountpoint and place your custom images inside the 
         - ./volumes/assets/Background.jpg:/srv/qwc_service/static/background.jpg
         - ./volumes/assets/logo.png:/srv/qwc_service/static/logo.jpg
 
-If you want to override some styles, you can set the `customstylesheet` `config` option to the name of a file below the `static` subfolder of the auth-service, and it will get included into the base template.
+If you want to override some styles, you can set the `customstylesheet` option to the name of a file below the `static` subfolder of the auth-service, and it will get included into the base template.
 
-Usage
------
+Run locally
+-----------
 
-Run standalone application:
+Install dependencies and run:
 
-    python src/server.py
+    # Setup venv
+    uv venv .venv
 
-Endpoints:
+    export CONFIG_PATH=<CONFIG_PATH>
+    uv run src/server.py
 
-    http://localhost:5017/login
+To use configs from a `qwc-docker` setup, set `CONFIG_PATH=<...>/qwc-docker/volumes/config`.
 
-    http://localhost:5017/logout
+Set `FLASK_DEBUG=1` for additional debug output.
+
+Set `FLASK_RUN_PORT=<port>` to change the default port (default: `5000`).
 
 Docker usage
 ------------
 
+The Docker image is published on [Dockerhub](https://hub.docker.com/r/sourcepole/qwc-db-auth).
+
 See sample [docker-compose.yml](https://github.com/qwc-services/qwc-docker/blob/master/docker-compose-example.yml) of [qwc-docker](https://github.com/qwc-services/qwc-docker).
-
-
-Development
------------
-
-Install dependencies:
-
-    uv sync
-
-Set the `CONFIG_PATH` environment variable to the path containing the service config and permission files when starting this service (default: `config`).
-
-    export CONFIG_PATH=../qwc-docker/volumes/config
-
-Configure development environment:
-
-    echo FLASK_ENV=development >.flaskenv
-    export MAIL_SUPPRESS_SEND=True
-    export MAIL_DEFAULT_SENDER=from@example.com
-
-Start local service:
-
-     uv run src/server.py
