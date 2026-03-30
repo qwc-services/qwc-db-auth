@@ -11,6 +11,7 @@ from flask_jwt_extended import create_access_token, create_refresh_token, \
     set_access_cookies, unset_jwt_cookies, get_jwt
 from flask_mail import Message
 from flask_wtf import FlaskForm
+from jinja2 import Environment
 import pyotp
 import qrcode
 import i18n
@@ -99,6 +100,7 @@ class DBAuth:
         self.ip_blacklist_max_attempt_count = config.get('ip_blacklist_max_attempt_count', 10)
         self.force_password_change_first_login = config.get('force_password_change_first_login', False)
         self.required_restore_input = config.get('required_restore_input', ['username', 'email'])
+        self.extra_login_fragment = config.get('extra_login_fragment', "")
 
         db_engine = DatabaseEngine()
         self.config_models = ConfigModels(
@@ -240,9 +242,14 @@ class DBAuth:
                 for error in errors:
                     flash(error)
 
+        env = Environment()
+        extra_login_fragment =  env.from_string(self.extra_login_fragment).render({
+            "i18n": i18n, "tenant": self.tenant, "request": request
+        })
         return render_template('login.html', form=form, i18n=i18n,
                             title=i18n.t("auth.login_page_title"),
-                            login_hint=self.login_hint)
+                            login_hint=self.login_hint,
+                            extra_login_fragment=extra_login_fragment)
 
     def ensureauth(self, identity):
         """Sign out."""

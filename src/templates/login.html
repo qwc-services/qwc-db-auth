@@ -42,5 +42,6 @@
             <a href="{{form.terms_url}}" class="login-form-link">Terms and conditions</a>
             {% endif %}
         </div>
+        {{ extra_login_fragment | safe }}
     </form>
 {% endblock %}

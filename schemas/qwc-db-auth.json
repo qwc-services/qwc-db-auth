@@ -104,6 +104,10 @@
             }
           ]
         },
+        "extra_login_template": {
+          "description": "Extra login window template fragment, rendered below the 'Change password' link.",
+          "type": "string"
+        },
         "post_param_login": {
           "description": "Whether 'username' and 'password', and possibly additional parameters, are passed as POST parameters. Additional parameters are appended to the target url query. Default: `false`",
           "type": "boolean"
