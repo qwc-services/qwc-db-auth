@@ -826,7 +826,8 @@ class DBAuth:
 
         # Create the tokens we will be sending back to the user
         identity = {
-            'username': user.name
+            'username': user.name,
+            'auth_service_url': url_for('logout', _external=True).replace("/logout", "")
         }
         # collect custom user info fields
         user_info = user.user_info
