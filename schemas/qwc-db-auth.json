@@ -92,8 +92,8 @@
         },
         "login_hint": {
           "description": "Login hint text, shown above login form fields. Either a string, or dictionary `{\"<lang>\": \"<text>\"}`. When providing a dictionary, the entry matching the current locale will be searched, with fallback to `en` if no entry for the current locale exists, and fallback to an empty string if no `en` entry exists. Default: `null`",
-          "oneOf":[
-            {"type": "string"},
+          "oneOf": [
+            { "type": "string" },
             {
               "type": "object",
               "patternProperties": {
@@ -104,7 +104,7 @@
             }
           ]
         },
-        "extra_login_template": {
+        "extra_login_fragment": {
           "description": "Extra login window template fragment, rendered below the 'Change password' link.",
           "type": "string"
         },
@@ -148,13 +148,8 @@
           }
         }
       },
-      "required": [
-        "db_url"
-      ]
+      "required": ["db_url"]
     }
   },
-  "required": [
-    "service",
-    "config"
-  ]
+  "required": ["service", "config"]
 }
