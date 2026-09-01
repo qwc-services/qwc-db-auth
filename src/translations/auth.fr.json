@@ -13,7 +13,7 @@
     "edit_password_reason_requested": "Mot de passe doit être modifié",
     "edit_password_successful": "Votre mot de passe a été changé",
     "email_placeholder": "Email",
-    "forgot_password": "Modifier mot de passe / Debloquer compte",
+    "forgot_password": "Modifier mot de passe / Débloquer compte",
     "invalid_unlock_token": "Jeton de déblocage invalide",
     "ip_blacklisted": "Adresse IP temporairement bloquée",
     "login_button": "Se connecter",
