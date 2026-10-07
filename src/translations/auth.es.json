@@ -2,7 +2,7 @@
   "es": {
     "account_locked": "Cuenta bloqueada",
     "account_unlocked": "Cuenta desbloqueada",
-    "auth_failed": "Nombre de usuario o contraseña inválidos",
+    "auth_failed": "Error de autenticación",
     "edit_password_button": "Cambiar mi contraseña",
     "edit_password_cannot_reuse": "Esta contraseña ya ha sido utilizada en tu cuenta",
     "edit_password_invalid_token": "El token de restablecimiento de contraseña no es válido",
@@ -30,6 +30,7 @@
     "notification_expiry_notice": "Aviso: Tu contraseña expirará en %{days} días",
     "notification_form_title": "Inicio de sesión",
     "notification_page_title": "Iniciar sesión",
+    "old_password_placeholder": "Contraseña actual",
     "password_placeholder": "Contraseña",
     "qrcode_button": "Confirmar",
     "qrcode_code_placeholder": "Confirmar código de verificación",

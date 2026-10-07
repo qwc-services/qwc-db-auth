@@ -551,16 +551,31 @@ class DBAuth:
         form.background = self.login_background
         form.customstylesheet = self.customstylesheet
         form.favicon = self.favicon
+        if token:
+            # set hidden field
+            form.reset_password_token.data = token
+        show_old_password = not form.reset_password_token.data
+
         if form.validate_on_submit():
             # create session for ConfigDB
             with self.db_session() as db_session, db_session.begin():
 
-                if identity:
-                    user = self.find_user(db_session, name=get_username(identity))
-                else:
+                if form.reset_password_token.data:
                     user = self.find_user(
                         db_session, reset_password_token=form.reset_password_token.data
                     )
+                elif identity:
+                    user = self.find_user(db_session, name=get_username(identity))
+                    login_success, login_fail_reason = self.__user_is_authorized(user, form.old_password.data)
+                    if not login_success:
+                        form.old_password.errors.append(login_fail_reason)
+                        return render_template(
+                            'edit_password.html', form=form, i18n=i18n, show_old_password=show_old_password,
+                            title=i18n.t("auth.edit_password_page_title")
+                        )
+                else:
+                    user = None
+
                 if user:
                     if not self.can_change_password(db_session, user):
                         # time since last password update was too short
@@ -570,7 +585,7 @@ class DBAuth:
                             return redirect(url_for('login', url=target_url))
                         else:
                             return render_template(
-                                'edit_password.html', form=form, i18n=i18n,
+                                'edit_password.html', form=form, i18n=i18n, show_old_password=show_old_password,
                                 title=i18n.t("auth.edit_password_page_title")
                             )
 
@@ -589,7 +604,7 @@ class DBAuth:
                             form.reset_password_token.data = token
 
                         return render_template(
-                            'edit_password.html', form=form, i18n=i18n,
+                            'edit_password.html', form=form, i18n=i18n, show_old_password=show_old_password,
                             title=i18n.t("auth.edit_password_page_title")
                         )
 
@@ -612,27 +627,23 @@ class DBAuth:
 
                     flash(i18n.t("auth.edit_password_successful"))
                     target_url = unquote(form.url.data) or None
-                    if not identity:
+                    if not show_old_password:
                         return redirect(url_for('login', url=target_url))
                     else:
                         return render_template(
-                            'edit_password.html', form=form, i18n=i18n,
+                            'edit_password.html', form=form, i18n=i18n, show_old_password=show_old_password,
                             title=i18n.t("auth.edit_password_page_title")
                         )
                 else:
                     # invalid reset token
                     flash(i18n.t("auth.edit_password_invalid_token"))
                     return render_template(
-                        'edit_password.html', form=form, i18n=i18n,
+                        'edit_password.html', form=form, i18n=i18n, show_old_password=show_old_password,
                         title=i18n.t("auth.edit_password_page_title")
                     )
 
-        if token:
-            # set hidden field
-            form.reset_password_token.data = token
-
         return render_template(
-            'edit_password.html', form=form, i18n=i18n,
+            'edit_password.html', form=form, i18n=i18n, show_old_password=show_old_password,
             title=i18n.t("auth.edit_password_page_title")
         )
 

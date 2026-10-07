@@ -2,7 +2,7 @@
   "de": {
     "account_locked": "Konto gesperrt",
     "account_unlocked": "Konto wurde entsprerrt",
-    "auth_failed": "Ungültiger Benutzername oder ungültiges Passwort",
+    "auth_failed": "Authentifizierung fehlgeschlagen",
     "edit_password_button": "ändern",
     "edit_password_cannot_reuse": "Dieses Passwort wurde für Ihr Benutzerkonto schon einmal benutzt",
     "edit_password_invalid_token": "Ungültiges Token zum Zurücksetzen des Passworts",
@@ -30,6 +30,7 @@
     "notification_expiry_notice": "Hinweis: Ihr Passwort läuft in %{days} Tagen ab",
     "notification_form_title": "Login",
     "notification_page_title": "Anmeldung",
+    "old_password_placeholder": "Aktuelles Passwort",
     "password_placeholder": "Passwort",
     "qrcode_button": "Bestätigen",
     "qrcode_code_placeholder": "Verifizierungscode bestätigen",

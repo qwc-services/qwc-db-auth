@@ -2,7 +2,7 @@
   "ca": {
     "account_locked": "Compte bloquejat",
     "account_unlocked": "Compte desbloquejat",
-    "auth_failed": "Nom d'usuari o contrasenya invàlids",
+    "auth_failed": "L'autenticació ha fallat",
     "edit_password_button": "Canviar la meva contrasenya",
     "edit_password_cannot_reuse": "Aquesta contrasenya ja ha estat utilitzada al teu compte",
     "edit_password_invalid_token": "El testimoni de restabliment de contrasenya no és vàlid",
@@ -30,6 +30,7 @@
     "notification_expiry_notice": "Avís: La teva contrasenya caducarà en %{days} dies",
     "notification_form_title": "Inici de sessió",
     "notification_page_title": "Inicia sessió",
+    "old_password_placeholder": "Contrasenya actual",
     "password_placeholder": "Contrasenya",
     "qrcode_button": "Confirmar",
     "qrcode_code_placeholder": "Confirma el codi de verificació",

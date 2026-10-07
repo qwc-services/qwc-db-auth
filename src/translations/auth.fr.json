@@ -2,7 +2,7 @@
   "fr": {
     "account_locked": "Compte bloqué",
     "account_unlocked": "Compte débloqué",
-    "auth_failed": "Identifiant ou mot de passe invalide",
+    "auth_failed": "Échec de l'authentification",
     "edit_password_button": "Appliquer mon nouveau mot de passe",
     "edit_password_cannot_reuse": "Ce mot de passe est identique à un ancien",
     "edit_password_invalid_token": "Le jeton de réinitialisation du mot de passe est invalide",
@@ -30,6 +30,7 @@
     "notification_expiry_notice": "Attention: Votre mot de passe expirera dans %{days} jours",
     "notification_form_title": "Connexion",
     "notification_page_title": "Authentification",
+    "old_password_placeholder": "Mot de passe actuel",
     "password_placeholder": "Mot de passe",
     "qrcode_button": "Confirmer",
     "qrcode_code_placeholder": "Code de vérification",

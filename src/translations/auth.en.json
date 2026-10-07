@@ -2,7 +2,7 @@
   "en": {
     "account_locked": "Account locked",
     "account_unlocked": "Account unlocked",
-    "auth_failed": "Invalid username or password",
+    "auth_failed": "Authentication failed",
     "edit_password_button": "Change my password",
     "edit_password_cannot_reuse": "This password has already been used for your account",
     "edit_password_invalid_token": "Reset password token is invalid",
@@ -30,6 +30,7 @@
     "notification_expiry_notice": "Notice: Your password will expire in %{days} days",
     "notification_form_title": "Login",
     "notification_page_title": "Sign In",
+    "old_password_placeholder": "Current password",
     "password_placeholder": "Password",
     "qrcode_button": "Confirm",
     "qrcode_code_placeholder": "Confirm verification code",
